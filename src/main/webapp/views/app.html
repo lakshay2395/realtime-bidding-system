@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="AuctionApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>Welcome To Auction Zone</title>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/assets/css/alertify.min.css">
+<script src="/assets/js/lib/bootstrap.min.js"></script>
+<script src="/assets/js/lib/alertify.min.js"></script>
+<script src="/assets/js/lib/angular.min.js"></script>
+<script src="/assets/js/src/AuctionAppIndexController.js"></script>
+</head>
+<body>
+<div ng-controller="AuctionAppIndexCtrl" class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h3>Welcome To Auction Zone</h3>
+			<h3>------------------------------</h3>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-12">
+			<h4>Register As New User</h4>
+			<form name="newUserForm" id="newUserForm" novalidate>
+				  <div class="form-group">
+				    <label for="exampleFormControlInput1">First Name</label>
+				    <input type="text" class="form-control" id="firstName" name="firstName" ng-model="user.firstName" placeholder="Enter Your First Name" required>
+				  </div>
+				  <div class="form-group">
+				    <label for="exampleFormControlInput1">Last Name</label>
+				    <input type="email" class="form-control" id="lastName" name="lastName" ng-model="user.lastName" placeholder="Enter Your Last Name" required>
+				  </div>
+				  <div class="form-group">
+				    <label for="exampleFormControlInput1">Email Id</label>
+				    <input type="email" class="form-control" id="emailId" name="emailId" ng-model="user.email" placeholder="Enter Your Email Id" required>
+				  </div>
+				  <div class="form-group">
+				    <button class="btn btn-success" ng-disabled="newUserForm.$invalid" ng-click="addUser()">Register</button>
+				  </div>
+			</form>
+		</div>
+	</div>
+	<br>
+	OR 
+	<br><br>
+	<div class="row">
+		<div class="col-md-12">
+			<h4>Already registered, move to auction zone</h4>
+			<br>
+			<div ng-repeat="auction in auctions">
+				<div class="card">
+				  <div class="card-body">
+				    <h4 class="card-title">{{auction.product.name}}</h4>
+				    <h6 class="card-subtitle mb-2 text-muted">{{auction.product.description}}</h6>
+				    <p class="card-text">Starts at {{auction.startTime | date}} & Ends at {{auction.endTime | date}}</p>
+				    <a ng-href="{{'/views/auction.html?auctionId='+auction.id}}" target="_blank" class="card-link">Go To Auction Page</a>
+				  </div>
+				</div>
+				<br>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html ng-app="AuctionApp">
+<head>
+<meta charset="ISO-8859-1">
+<title>Welcome To Auction Zone</title>
+<base href="/views/auction.html">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/assets/css/alertify.min.css">
+<script src="/assets/js/lib/bootstrap.min.js"></script>
+<script src="/assets/js/lib/alertify.min.js"></script>
+<script src="/assets/js/lib/angular.min.js"></script>
+<script src="/assets/js/lib/ng-stomp.standalone.min.js"></script>
+<script src="/assets/js/src/RealtimeAuctionController.js"></script>
+</head>
+<body>
+<div ng-controller="RealtimeAuctionCtrl" class="container">
+	<br><br>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="card" style="width: 20rem;">
+			 <!--  <img class="card-img-top" ng-src="{{auction.product.imageUrl}}" alt="Card image cap"> -->
+			  <div class="card-body">
+			    <h4 class="card-title">{{auction.product.name}}</h4>
+			    <p class="card-text">{{auction.product.description}}</p>
+			  </div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<table class="table">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Users Name</th>
+			      <th scope="col">Email ID</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr ng-repeat="user in auction.participants">
+			      <th scope="row">{{$index+1}}</th>
+			      <td>{{user.firstName+" "+user.lastName}}</td>
+			      <td>{{user.email}}</td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>
+	<br><br>
+	<div class="row">
+		<div class="col-md-4">
+			<p>Current Time : {{currentTime | date:'medium'}}</p>
+		</div>
+		<div class="col-md-4">
+			<p>Start Bid Amount : Rs.{{auction.startingAmount}}</p>
+		</div>
+		<div class="col-md-4">
+			<p>Ends At : {{auction.endTime | date:'medium'}}</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Name</th>
+			      <th scope="col">Bid Amount</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr ng-repeat="bid in auction.biddings | orderBy : '-amount'">
+			      <th scope="row">{{$index+1}}</th>
+			      <td>{{bid.user.firstName+" "+bid.user.lastName}}</td>
+			      <td>{{bid.amount}}</td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>
+	<br><br>
+	<form name="joinAuctionForm" id="joinAuctionForm" novalidate>
+		<div ng-if="!joined" class="row">
+				<div class="col-md-6 form-group">
+					<input type="email" ng-model="temp.email" placeholder="Enter your registered email ID" name="emailId" class="form-control"> 
+				</div>
+				<div class="col-md-6">
+					<button type="button" ng-click="joinAuction()" class="btn btn-md btn-success">JOIN AUCTION</button>
+				</div>
+		</div>
+	</form>
+	<form name="makeBidForm" id="makeBidForm" novalidate>
+		<div ng-if="joined" class="row">
+				<div class="col-md-6 form-group">
+					<input type="number" name="amount" class="form-control" ng-model="temp.bid"> 
+				</div>
+				<div class="col-md-6 form-group">
+					<button type="button" ng-click="addNewBid()" class="btn btn-md btn-success">MAKE BID</button>
+				</div>
+		</div>
+	</form>
+	<div class="modal" id="winnerModal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Auction Closed !!!</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <p>Winner of the auction is {{winner.name}} at bid {{winner.bidAmount}}</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+</body>
+</html>
