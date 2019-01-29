@@ -9,7 +9,9 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.realtimebidding.model.Auction;
+import com.realtimebidding.model.BidInformation;
 import com.realtimebidding.model.Product;
+import com.realtimebidding.model.User;
 import com.realtimebidding.repository.AuctionRepository;
 import com.realtimebidding.services.AuctionService;
 
@@ -29,6 +31,8 @@ public class AuctionServiceImpl implements AuctionService {
 
 	@Override
 	public Auction addNewAuction(Auction auction) throws Exception {
+		auction.setParticipants(new java.util.HashSet<User>());
+		auction.setBiddings(new java.util.ArrayList<BidInformation>());
 		return AuctionRepository.insert(auction);
 	}
 

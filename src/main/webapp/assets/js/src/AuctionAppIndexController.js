@@ -3,7 +3,7 @@ angular.module("AuctionApp",[])
 	
 	this.addUser = function(user){
 		var defer = $q.defer();
-		$http.post("/user/").then(function(data){
+		$http.post("/user/",user).then(function(data){
 			if(data.data.status == "SUCCESS")
 				defer.resolve(data.data.data);
 			else
@@ -53,9 +53,10 @@ angular.module("AuctionApp",[])
 	
 	$scope.addUser = function(){
 		$scope.user.dateOfJoining = new Date();
+		console.log($scope.user);
 		IndexService.addUser($scope.user)
 		.then(function(data){
-			$scope.user = angular.copy($scope.tempUser);
+			$scope.user = angular.copy($scope.user);
 		})
 		.catch(function(err){
 			$scope.errorHandler(err);

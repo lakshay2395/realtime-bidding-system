@@ -41,6 +41,10 @@ public class RealtimeAuctionHandlerServiceImpl implements RealtimeAuctionHandler
 		User user = userService.getById(auctionJoinRequest.getUserId());
 		if(user != null) {
 			Auction auction = auctionsMap.get(productId);
+			if(auction.getParticipants() == null)
+				auction.setParticipants(new java.util.HashSet<User>());
+			if(auction.getBiddings() == null)
+				auction.setBiddings(new java.util.ArrayList<BidInformation>());
 			if(auction.getParticipants().add(user))
 				return new Response<User>(ResponseTypeEnum.SUCCESS,user);
 			return new Response<String>(ResponseTypeEnum.ERROR,"User already added as auction participant");
@@ -52,6 +56,10 @@ public class RealtimeAuctionHandlerServiceImpl implements RealtimeAuctionHandler
 	public Response<?> addBid(String productId, AuctionBidRequestDto auctionBidRequest) throws Exception {
 		checkForAuctionExistence(productId);
 		Auction auction = auctionsMap.get(productId);
+		if(auction.getParticipants() == null)
+			auction.setParticipants(new java.util.HashSet<User>());
+		if(auction.getBiddings() == null)
+			auction.setBiddings(new java.util.ArrayList<BidInformation>());
 		User user = userService.getById(auctionBidRequest.getUserId());
 		if(user == null)
 			return new Response<String>(ResponseTypeEnum.ERROR,"No such user exists");
@@ -89,6 +97,10 @@ public class RealtimeAuctionHandlerServiceImpl implements RealtimeAuctionHandler
 		Product product = productService.getById(productId);
 		if(product != null) {
 			Auction auction = auctionService.getByProduct(product);
+			if(auction.getParticipants() == null)
+				auction.setParticipants(new java.util.HashSet<User>());
+			if(auction.getBiddings() == null)
+				auction.setBiddings(new java.util.ArrayList<BidInformation>());
 			List<BidInformation> list = auction.getBiddings();
 			BidInformation maxBid = list.get(0);
 			for(BidInformation bid : list){
@@ -104,6 +116,10 @@ public class RealtimeAuctionHandlerServiceImpl implements RealtimeAuctionHandler
 	public void markAuctionAsCompleted(String productId)throws Exception{
 		checkForAuctionExistence(productId);
 		Auction auction = auctionsMap.get(productId);
+		if(auction.getParticipants() == null)
+			auction.setParticipants(new java.util.HashSet<User>());
+		if(auction.getBiddings() == null)
+			auction.setBiddings(new java.util.ArrayList<BidInformation>());
 		auctionService.updateAuction(auction.getId(), auction);
 		auctionsMap.remove(productId);
 	}

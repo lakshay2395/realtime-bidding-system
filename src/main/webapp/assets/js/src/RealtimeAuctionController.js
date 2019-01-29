@@ -67,6 +67,12 @@ angular.module("AuctionApp",['ngStomp'])
 	}())
 	.then(function(data){
 		$scope.auction = angular.copy(data);
+		if(!$scope.auction.participants){
+			$scope.auction.participants = [];
+		}
+		if(!$scope.auction.biddings){
+			$scope.auction.biddings = [];
+		}
 		$log.log($scope.auction);
 		return $stomp.connect("/rt-auction");
 	})
@@ -93,6 +99,7 @@ angular.module("AuctionApp",['ngStomp'])
 	var handleTimeUpdates = function(data){
 		$timeout(function(){
 			$scope.currentTime = new Date(data.messageTime);
+			$scope.auction
 		},0);
 	}
 	
@@ -175,6 +182,12 @@ angular.module("AuctionApp",['ngStomp'])
 		console.log($scope.temp.email);
 		RealtimeAuctionService.getUserByEmail({"email" : $scope.temp.email})
 		.then(function(data){
+			if(!$scope.auction.participants){
+				$scope.auction.participants = [];
+			}
+			if(!$scope.auction.biddings){
+				$scope.auction.biddings = [];
+			}
 			$log.log("join Auction User Result -> ",data);
 			$scope.userIds = $scope.auction.participants.map(function(user){
 				return user.id;
